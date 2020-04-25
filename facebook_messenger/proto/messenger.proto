@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package mesenger;
+
+
+service MessengerService {
+    rpc SendMessage(SendMessageRequest) returns (SendMessageRespond) {}
+    rpc ReceiveMessage(ReceiveRequest) returns (stream ReceiveRespond) {}
+}
+
+message ReceiveRequest {}
+
+message SendMessageRespond {}
+
+message SendMessageRequest {
+    string receiver = 1;
+    string content = 2;
+}
+
+message ReceiveRespond {
+    string sender = 1;
+    string content = 2;
+}

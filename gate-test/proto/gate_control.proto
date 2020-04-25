@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package gate_control;
+
+
+service GateService {
+    rpc Go(GoRequest) returns (GoRespond) {}
+}
+
+message GoRequest {
+    string userId = 1;
+    bool goOut = 2;
+}
+
+message GoRespond {
+    bool accepted = 1;
+    string message = 2;
+}

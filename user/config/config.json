@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "dorm",
+    "password": "TrucNgodethuong123!",
+    "database": "dorm",
+    "host": "localhost",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "dorm",
+    "password": "TrucNgodethuong123!",
+    "database": "dorm",
+    "host": "localhost",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "dorm",
+    "password": "TrucNgodethuong123!",
+    "database": "dorm",
+    "host": "localhost",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}

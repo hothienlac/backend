@@ -1,0 +1,183 @@
+syntax = "proto3";
+ 
+package user;
+ 
+service UserService {
+        /////////////////////    GET    /////////////////////
+
+    rpc GetRoleByEmail(GetRoleByEmailRequest) returns (GetRoleByEmailRespond){}
+    rpc GetRoleByTelegram(GetRoleByTelegramRequest) returns (GetRoleByTelegramRespond){}
+
+    rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersRespond){}
+    rpc GetUserByEmail(GetUserByEmailRequest) returns (GetUserByEmailRespond){}
+    rpc GetUserByTelegram(GetUserByTelegramRequest) returns (GetUserByTelegramRespond){}
+    
+    rpc GetParentsByTelegram(GetParentsByTelegramRequest) returns (GetParentsByTelegramRespond){}
+    rpc GetChildrenByTelegram(GetChildrenByTelegramRequest) returns (GetChildrenByTelegramRespond){}
+
+        /////////////////////  CREATE   /////////////////////
+
+    rpc CreateUser(CreateUserRequest) returns (CreateUserRespond){}
+    rpc CreateRelationship(CreateRelationshipRequest) returns (CreateRelationshipRespond){}
+    
+        /////////////////////  UPDATE   /////////////////////
+
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserRespond){}
+
+        /////////////////////  DELETE   /////////////////////
+
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserRespond){}
+    rpc DeleteRelationship(DeleteRelationshipRequest) returns (DeleteRelationshipRespond){}
+}
+
+/////////////////////////  GET ROLE BY TELEGRAM   /////////////////////////
+ 
+message GetRoleByTelegramRequest {
+    string telegram = 1;
+}
+
+message GetRoleByTelegramRespond {
+    string role = 1;
+}
+
+/////////////////////////    GET ROLE BY EMAIL    /////////////////////////
+ 
+message GetRoleByEmailRequest {
+    string email = 1;
+}
+
+message GetRoleByEmailRespond {
+    string role = 1;
+}
+
+/////////////////////////      GET ALL USERS      /////////////////////////
+
+message GetAllUsersRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+
+}
+
+message GetAllUsersRespond {
+    repeated User users = 1;
+}
+
+/////////////////////////    GET USER BY EMAIL    /////////////////////////
+
+message GetUserByEmailRequest {
+    string email = 1;
+}
+
+message GetUserByEmailRespond {
+    User user = 1;
+}
+
+/////////////////////////  GET USER BY TELEGRAM   /////////////////////////
+
+message GetUserByTelegramRequest {
+    string telegram = 1;
+}
+
+message GetUserByTelegramRespond {
+    User user = 1;
+}
+
+///////////////////////// GET PARENTS BY TELEGRAM /////////////////////////
+
+message GetParentsByTelegramRequest {
+    string telegram = 1;
+}
+
+message GetParentsByTelegramRespond {
+    repeated User parents = 1;
+}
+
+//////////////////////// GET CHILDREN BY TELEGRAM /////////////////////////
+
+message GetChildrenByTelegramRequest {
+    string telegram = 1;
+}
+
+message GetChildrenByTelegramRespond {
+    repeated User children = 1;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+
+
+/////////////////////////       CREATE USER       /////////////////////////
+
+message CreateUserRequest {
+    User user = 1;
+}
+
+message CreateUserRespond {}
+
+/////////////////////////   CREATE RELATIONSHIP   /////////////////////////
+
+message CreateRelationshipRequest {
+    string parentTelegram = 1;
+    string childTelegram = 2;
+}
+
+message CreateRelationshipRespond {}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+
+
+/////////////////////////       UPDATE USER       /////////////////////////
+
+message UpdateUserRequest {
+    string telegram = 1;
+    User update = 2;
+    repeated string fields = 3;
+}
+
+message UpdateUserRespond {}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////// DELETE USER BY TELEGRAM  ////////////////////////
+
+message DeleteUserRequest {
+    string telegram = 1;
+}
+
+message DeleteUserRespond {}
+
+/////////////////////////   DELETE RELATIONSHIP   /////////////////////////
+
+message DeleteRelationshipRequest {
+    User parent = 1;
+    User child = 2;
+}
+
+message DeleteRelationshipRespond {}
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
+
+message User {
+    string name = 1;
+    string phone = 2;
+    string email = 3;
+    string role = 4;
+    string telegram = 5;
+}

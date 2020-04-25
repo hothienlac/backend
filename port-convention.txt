@@ -1,0 +1,7 @@
+auth:			50001
+history:		50002
+user:			50003
+messenger:		50004
+message-service:	50005
+notification:		50006
+gate:			50007

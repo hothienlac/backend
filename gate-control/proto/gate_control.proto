@@ -10,6 +10,7 @@ service GateService {
 message GoRequest {
     string userId = 1;
     bool goOut = 2;
+    string label = 3;
 }
 
 message GoRespond {

@@ -7,5 +7,4 @@ const PROTO_PATH = path.join(__dirname, '/proto/gate_control.proto');
 const server = new GateServer(PROTO_PATH, PORT);
 
 
-
 server.listen();

@@ -1,6 +1,3 @@
-
-
-
 class Notification {
 
     constructor(messageClient) {

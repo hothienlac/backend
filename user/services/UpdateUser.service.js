@@ -1,6 +1,6 @@
 const status = require('grpc').status;
 
-
+// Function is not working properly
 module.exports = (models) => async (call, callback) => {
     const telegram = call.request.telegram;
     const update = call.request.update;

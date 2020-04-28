@@ -1,6 +1,6 @@
 const grpc = require("grpc");
 const protoLoader = require("@grpc/proto-loader");
-
+const user = require('./user.client');
 
 //Load the protobuf
 const proto = grpc.loadPackageDefinition(
@@ -13,34 +13,62 @@ const proto = grpc.loadPackageDefinition(
     })
 );
    
-// const MESSAGE_SERVER = process.env.MESSAGE_SERVER + ':' + process.env.MESSAGE_PORT;
-const MESSAGE_SERVER = 'localhost:50005';
+const MESSAGE_SERVER = process.env.MESSAGE_SERVER + ':' + process.env.MESSAGE_PORT;
+// const MESSAGE_SERVER = 'localhost:50005';
 
 
 
-class message {
+class Message {
 
     constructor() {
+        Message.connectServer.call(this);
+    }
+
+    static connectServer() {
         this.messageService = new proto.message.MessageService(
             MESSAGE_SERVER,
             grpc.credentials.createInsecure()
         );
         const listener = this.messageService.ReceiveMessage({});
-        listener.on("data", message.handleMessage.bind(this));
+        console.log('Connected to server successfully!!');
+        listener.on("data", Message.handleMessage.bind(this));
+        listener.on("error", (err) => {
+            console.log('Opp.. Connection is down!!! Trying to reconnect to server in 5 seccond.');
+            setTimeout(Message.connectServer.bind(this), 5000);
+        });
     }
 
     static handleMessage(data) {
+        if (data.sender === '') {
+            console.log(data.content);
+            return;
+        }
         const sender = data['sender'];
         const content = data['content'];
+
         console.log('From: ', sender);
         console.log('Content:', content);
-        this.sendMessage(sender, 'You have send: ' + content);
+
+        user.getRoleByTelegram(sender, (err, data) => {
+            let userType;
+            if (err) {
+                userType = 'OTHER';
+            } else {
+                userType = data.role;
+            }
+            console.log(userType);
+            Message.sendMessage.call(this, sender, content, userType);
+        });
     }
 
-    sendMessage(receiver, content) {
-        this.messageService.SendMessage({receiver, content}, ()=>{});
+    static sendMessage(receiver, content, type) {
+        this.messageService.SendMessage({receiver, content, type}, ()=>{});
+    }
+
+    send(receiver, content, type) {
+        Message.sendMessage.call(this, receiver, content, type);
     }
     
 }
 
-module.exports = message;
+module.exports = Message;

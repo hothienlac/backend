@@ -1,4 +1,7 @@
-const TelegramBot = require('node-telegram-bot-api');
+const axios = require('axios');
+
+const parent_template = require('./parent_template');
+const student_template = require('./student_template');
 
 // ---------- LOGGIN FEATURES ----------
 var fs = require('fs');
@@ -14,48 +17,100 @@ console.log = function(d) { //
 
 console.log("[DEBUG] Bot is starting...");
 
-
-function log(msg) {
-	let date = new Date(msg.date * 1000);
-	let timestamp = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + "@" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-	 
-	
-	let msgFromInfo = "";
-	console.log(msg)
-	if(msg.chat.type == "private"){
-		msgFromInfo = msg.from.first_name + "(" + msg.from.id + ")";
-	}else if(msg.chat.type == "group"){
-		msgFromInfo = msg.from.first_name + "(" + msg.from.id + "/" + msg.chat.title + ")";
-	}
-	
-	console.log("[INFO](" + timestamp + ") Msg from " + msgFromInfo + ": " + msg.text);
-}
+TOKEN = process.env.TELEGRAM_TOKEN
 
 
 class Bot {
 	
-	constructor(token) {
-		this.bot = new TelegramBot(token, {polling: true});
-		this.bot.on('message', (msg) => {
-			log(msg);
-			const handler = Bot.handleMessage.bind(this);
-			handler(msg.chat.id, msg.text)
-		})
+	constructor() {
+		this.axios = axios.create({
+			baseURL: `https://api.telegram.org/bot${TOKEN}`,
+		});
+		
 	}
 
 	addServer(server) {
 		this.server = server;
 	}
 
-	static handleMessage(sender, content) {
-		this.sendMessage(sender, 'You have sent: ' + content)
-		this.server.receive(sender, content);
+	receiveMessage(sender, content) {
+		this.server.receive(sender, content)
 	}
 
-	sendMessage(receiver,content){
-		this.bot.sendMessage('1161835302', content)
+	updateMessage(callback_query) {
+		console.log(callback_query);
+		const data = callback_query.data;
+		const message_id = callback_query.message.message_id;
+		const chat_id = callback_query.message.chat.id;
+		const result = parent_template[data]();
+		const text = result.text;
+		const reply_markup = result.reply_markup;
+
+		this.editMessageText({chat_id, message_id, text, reply_markup});
 	}
 
+	editMessageText(data) {
+		this.axios.post('/editMessageText', data)
+		.then((res) => {console.log(res.data)})
+		.catch((err) => {console.log(err.response.data)});
+	}
+
+	sendMessage(receiver, content, type) {
+		console.log({receiver, content, type});
+		if (type === 'STUDENT') {
+			this.sendStudent(receiver, content);
+			return;
+		}
+		if (type === 'PARENT') {
+			this.sendParent(receiver, content);
+			return;
+		}
+		this.sendOther(receiver, content);
+	}
+
+	sendParent(receiver, content) {
+		console.log('PARENT');
+		this.axios.post('/sendMessage', {
+			chat_id: receiver,
+			text: content,
+			reply_markup: parent_template.mainMenu
+		})
+		.then((res) => {console.log(res.data)})
+		.catch((err) => {console.log(err.response.data)});
+	}
+
+	sendStudent(receiver, content) {
+		console.log('STUDENT');
+		this.axios.post('/sendMessage', {
+			chat_id: receiver,
+			text: content,
+			reply_markup: student_template.mainMenu
+		})
+		.then((res) => {console.log(res.data)})
+		.catch((err) => {console.log(err.response.data)});
+	}
+
+	sendOther(receiver, content) {
+		console.log('OTHER');
+		this.axios.post('/sendMessage', {
+			chat_id: receiver,
+			text: content,
+			reply_markup: {
+				inline_keyboard: [
+					[{
+						text: 'Visit Tan Tao University',
+						url: 'http://ttu.edu.vn/',
+					}],
+					[{
+						text: 'Contact Us with Facebook',
+						url: 'https://www.facebook.com/tantaouniversity',
+					}]
+				]
+			}
+		})
+		.then((res) => {console.log(res.data)})
+		.catch((err) => {console.log(err.response.data)});
+	}
 }
 
 module.exports = Bot;

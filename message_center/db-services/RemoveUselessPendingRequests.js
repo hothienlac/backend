@@ -1,13 +1,13 @@
-const Op = Sequelize.Op;
+const { Op } = require('sequelize');
 const moment = require('moment');
 
 
 module.exports = (models) => async () => {
-    models.PendingRequest.destroy({
+    return models.PendingRequest.destroy({
         where: {
             end: {
                 [Op.lt]: moment()
             }
         }
-    })
+    });
 }

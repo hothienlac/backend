@@ -2,10 +2,10 @@
 module.exports = (sequelize, DataTypes) => {
   const RequestHistory = sequelize.define('RequestHistory', {
     sid: DataTypes.STRING,
-    date: DataTypes.DATE,
-    begin: DataTypes.TIME,
-    end: DataTypes.TIME,
+    begin: DataTypes.DATE,
+    end: DataTypes.DATE,
     reason: DataTypes.TEXT,
+    timeStamp: DataTypes.DATE,
     accepted: DataTypes.BOOLEAN
   }, {});
   RequestHistory.associate = function(models) {

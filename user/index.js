@@ -5,7 +5,7 @@ const path = require('path');
 require('dotenv').config();
 
 
-const models = require('./models')
+const models = require('./models');
 
 models.sequelize.sync().then(() => {
     console.log('Datebase connected!')
@@ -18,14 +18,11 @@ models.sequelize.sync().then(() => {
 
 
 
-const UserServer = require('./server')
+const UserServer = require('./server');
 
-const PORT = process.env.PORT;
-const PROTO_PATH = path.join(__dirname, '/proto/user.proto');
+const services = require('./services')(models);
 
-const services = require('./services')(models)
-
-const server = new UserServer(PROTO_PATH, PORT, services);
+const server = new UserServer(services);
 
 server.listen();
 

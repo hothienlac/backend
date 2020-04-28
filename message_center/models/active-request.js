@@ -1,14 +1,13 @@
 'use strict';
-
 module.exports = (sequelize, DataTypes) => {
-  const PendingRequest = sequelize.define('PendingRequest', {
+  const ActiveRequest = sequelize.define('ActiveRequest', {
     sid: DataTypes.STRING,
     begin: DataTypes.DATE,
     end: DataTypes.DATE,
     reason: DataTypes.TEXT
   }, {});
-  PendingRequest.associate = function(models) {
+  ActiveRequest.associate = function(models) {
     // associations can be defined here
   };
-  return PendingRequest;
+  return ActiveRequest;
 };

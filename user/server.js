@@ -2,13 +2,16 @@ const path = require('path');
 const grpc = require('grpc');
 const protoLoader = require("@grpc/proto-loader");
 
+const PORT = process.env.PORT;
+const PROTO_PATH = path.join(__dirname, '/proto/user.proto');
+
 class UserServer {
 
-    constructor(protoRoot, port, services) {
-        this.port = port;
+    constructor(services) {
+        this.port = PORT;
 
-        this.messengerService = grpc.loadPackageDefinition(
-            protoLoader.loadSync(protoRoot, {
+        this.userService = grpc.loadPackageDefinition(
+            protoLoader.loadSync(PROTO_PATH, {
                 keepCase: true,
                 longs: String,
                 enums: String,
@@ -18,14 +21,14 @@ class UserServer {
         );
         this.server = new grpc.Server();
         this.server.addService(
-            this.messengerService.user.UserService.service,
+            this.userService.user.UserService.service,
             services,
         )
     }
 
     listen () {
         this.server.bind(`localhost:${this.port}`, grpc.ServerCredentials.createInsecure());
-        console.log(`Messenger grpc server listening on ${this.port}`);
+        console.log(`User grpc server listening on ${this.port}`);
         this.server.start();
     }
 

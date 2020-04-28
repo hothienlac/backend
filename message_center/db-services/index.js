@@ -1,26 +1,32 @@
 class Services {
 
     constructor(models) {
-        this.createRelationship = require('./CreateRelationship.service')(models);
-        this.createUser = require('./CreateUser.service')(models);
-        this.getRoleByEmail = require('./GetRoleByEmail.service')(models);
-        this.getRoleByTelegram = require('./GetRoleByTelegram.service')(models);
-        this.getAllUsers = require('./GetAllUsers.service')(models);
-        this.getParentsByTelegram = require('./GetParentsByTelegram.service')(models);
-        this.getChildrenByTelegram = require('./GetChildrenByTelegram.service')(models);
-        this.updateUser = require('./UpdateUser.service')(models);
+        this.addActiveRequest = require('./AddActiveRequest')(models);
+        this.addPendingRequest = require('./AddPendingRequest')(models);
+        this.addRequestHistory = require('./AddRequestHistory')(models);
+        this.getAllPendingRequests = require('./GetAllPendingRequests')(models);
+        this.getAllActiveRequests = require('./GetAllActiveRequests')(models);
+        this.getPendingRequestsByStudent = require('./GetPendingRequestsByStudent')(models);
+        this.getActiveRequestByStudent = require('./GetActiveRequestByStudent')(models);
+        this.getRequestHistory = require('./GetRequestHistory')(models);
+        this.removePendingRequests = require('./RemovePendingRequests')(models);
+        this.removeUselessPendingRequests = require('./RemoveUselessPendingRequests')(models);
+        this.removeOutdatedActiveRequests = require('./RemoveOutdatedActiveRequests')(models);
     }
 
     getServices() {
         const result = {
-            CreateRelationship: this.createRelationship,
-            CreateUser: this.createUser,
-            GetRoleByEmail: this.getRoleByEmail,
-            GetRoleByTelegram: this.getRoleByTelegram,
-            GetAllUsers: this.getAllUsers,
-            GetParentsByTelegram: this.getParentsByTelegram,
-            UpdateUser: this.updateUser,
-            GetChildrenByTelegram: this.getChildrenByTelegram,
+            AddActiveRequest: this.addActiveRequest,
+            AddPendingRequest: this.addPendingRequest,
+            AddRequestHistory: this.addRequestHistory,
+            GetAllActiveRequests: this.getAllActiveRequests,
+            GetActiveRequestByStudent: this.getActiveRequestByStudent,
+            GetAllPendingRequests: this.getAllPendingRequests,
+            GetPendingRequestsByStudent: this.getPendingRequestsByStudent,
+            GetRequestHistory: this.getRequestHistory,
+            RemovePendingRequests: this.removePendingRequests,
+            RemoveUselessPendingRequests: this.removeUselessPendingRequests,
+            RemoveOutdatedActiveRequests: this.removeOutdatedActiveRequests
         }
         return result;
     }

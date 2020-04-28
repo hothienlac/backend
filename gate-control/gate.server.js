@@ -1,6 +1,7 @@
 const path = require('path');
 const grpc = require('grpc');
 const protoLoader = require("@grpc/proto-loader");
+const mysql = require('mysql');
 
 const GoIn = require('./go-in');
 const GoOut = require('./go-out');
@@ -13,6 +14,13 @@ class GateServer {
 
     constructor(protoRoot, port) {
         this.port = port;
+
+        this.connection = mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: 'password',
+            database: 'dorm_database'
+        });
 
         this.messengerService = grpc.loadPackageDefinition(
             protoLoader.loadSync(protoRoot, {
@@ -35,12 +43,15 @@ class GateServer {
     static go(call, callback) {
         const userId = call.request.userId;
         const goOut = call.request.goOut;
+        const label = call.request.label;
+        const current_time = new Date(Date.now());
+
         try {
-            const accepted = goOut ? GoOut(userId) : GoIn(userId);
-            const message = 'abc';
-            const result = {accepted, message};
-            console.log(result);
-            callback(null, result)
+            const accepted = goOut ? GoOut(this.connection, callback, label, current_time) : GoIn(userId);
+            // const message = 'abc';
+            // const result = {accepted, message};
+            // console.log(result);
+            // callback(null, result)
         } catch (err) {
             console.warn(err);
             callback(err);

@@ -15,6 +15,7 @@ message SendMessageRespond {}
 message SendMessageRequest {
     string receiver = 1;
     string content = 2;
+    string type = 3;
 }
 
 message ReceiveRespond {

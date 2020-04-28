@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "message_center",
+    "password": "TrucNgodethuong123!",
+    "database": "message_center",
+    "host": "localhost",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "message_center",
+    "password": "TrucNgodethuong123!",
+    "database": "message_center",
+    "host": "localhost",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "message_center",
+    "password": "TrucNgodethuong123!",
+    "database": "message_center",
+    "host": "localhost",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}

@@ -49,8 +49,9 @@ class MessageServer {
     static sendMessage(call, callback) {
         const receiver = call.request.receiver;
         const content = call.request.content;
+        const type = call.request.type;
         try {
-            this.bot.sendMessage(receiver,content)
+            this.bot.sendMessage(receiver, content, type)
             callback(null, null)
         } catch (err) {
             console.warn(err);
@@ -59,19 +60,18 @@ class MessageServer {
     }    
 
     static receiveMessage(call, callback) {
-        console.log('hello');
-        call.write({
-            sender: 'sender',
-            content: 'content',
-        })
         this.listener = call;
     }
 
     receive(sender, content) {
-        this.listener.write({
-            sender: sender,
-            content: content,
-        });
+        try {
+            this.listener.write({
+                sender: sender,
+                content: content,
+            });
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     listen () {

@@ -1,0 +1,186 @@
+syntax = "proto3";
+
+package request_manager;
+
+
+service RequestManagerService {
+    rpc CreateRequest(CreateRequestRequest) returns (CreateRequestRespond) {}
+    rpc DecideRequest(DecideRequestRequest) returns (DecideRequestRespond) {}
+    
+    rpc GetAllActiveRequest(GetAllActiveRequestRequest) returns (GetAllActiveRequestRespond) {}
+    rpc GetAllPendingRequest(GetAllPendingRequestRequest) returns (GetAllPendingRequestRespond) {}
+    rpc GetActiveRequestByStudent(GetActiveRequestByStudentRequest) returns (GetActiveRequestByStudentRespond) {}
+    rpc GetActiveRequestByParent(GetActiveRequestByParentRequest) returns (GetActiveRequestByParentRespond) {}
+    rpc GetPendingRequestByStudent(GetPendingRequestByStudentRequest) returns (GetPendingRequestByStudentRespond) {}
+    rpc GetPendingRequestByParent(GetPendingRequestByParentRequest) returns (GetPendingRequestByParentRespond) {}
+    
+    rpc GetRequestHistory(GetRequestHistoryRequest) returns (GetRequestHistoryRespond) {}
+    rpc GetRequestHistoryByParent(GetRequestHistoryByParentRequest) returns (GetRequestHistoryByParentRespond) {}
+    rpc GetRequestHistoryByStudent(GetRequestHistoryByStudentRequest) returns (GetRequestHistoryByStudentRespond) {}
+    rpc GetRequestHistoryByDate(GetRequestHistoryByDateRequest) returns (GetRequestHistoryByDateRespond) {}
+    rpc GetRequestHistoryByAcceptance(GetRequestHistoryByAcceptanceRequest) returns (GetRequestHistoryByAcceptanceRespond) {}
+}
+
+/////   CREATE REQUEST
+
+message CreateRequestRequest {
+    string sid = 1;
+    int64 begin = 2;
+    int64 end = 3;
+    string reason = 4;
+}
+
+message CreateRequestRespond {}
+
+/////   DECIDE REQUEST
+
+message DecideRequestRequest {
+    string id = 1;
+    bool accepted = 2;
+}
+
+message DecideRequestRespond {}
+
+///////////////////////////////////
+
+/////   GET ALL ACTIVE REQUEST
+
+message GetAllActiveRequestRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+}
+
+message GetAllActiveRequestRespond {
+    repeated RequestContent requests = 1;
+    int32 total = 2;
+}
+
+/////   GET ALL PENDING REQUEST
+
+message GetAllPendingRequestRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+}
+
+message GetAllPendingRequestRespond {
+    repeated RequestContent requests = 1;
+    int32 total = 2;
+}
+
+/////   GET ACTIVE REQUEST BY STUDENT
+
+message GetActiveRequestByStudentRequest {
+    string sid = 1;
+}
+
+message GetActiveRequestByStudentRespond {
+    repeated RequestContent requests = 1;
+}
+
+/////   GET ACTIVE REQUEST BY PARENT
+
+message GetActiveRequestByParentRequest {
+    string pid = 1;
+}
+
+message GetActiveRequestByParentRespond {
+    repeated RequestContent requests = 1;
+}
+
+/////   GET PENDING REQUEST BY STUDENT
+
+message GetPendingRequestByStudentRequest {
+    string sid = 1;
+}
+
+message GetPendingRequestByStudentRespond {
+    repeated RequestContent requests = 1;
+}
+
+/////   GET PENDING REQUEST BY PARENT
+
+message GetPendingRequestByParentRequest {
+    string pid = 1;
+}
+
+message GetPendingRequestByParentRespond {
+    repeated RequestContent requests = 1;
+}
+
+///////////////////////////////////
+
+/////   GET REQUEST HISTORY
+
+message GetRequestHistoryRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+}
+
+message GetRequestHistoryRespond {
+    repeated RequestHistoryContent requests = 1;
+    int32 total = 2;
+}
+
+/////   GET REQUEST HISTORY BY PARENT
+
+message GetRequestHistoryByParentRequest {
+    string pid = 1;
+}
+
+message GetRequestHistoryByParentRespond {
+    repeated RequestHistoryContent requests = 1;
+    int32 total = 2;
+}
+
+/////   GET REQUEST HISTORY BY STUDENT
+
+message GetRequestHistoryByStudentRequest {
+    string sid = 1;
+}
+
+message GetRequestHistoryByStudentRespond {
+    repeated RequestHistoryContent requests = 1;
+    int32 total = 2;
+}
+
+/////   GET REQUEST HISTORY BY DATE
+
+message GetRequestHistoryByDateRequest {
+    int64 date = 1;
+}
+
+message GetRequestHistoryByDateRespond {
+    repeated RequestHistoryContent requests = 1;
+    int32 total = 2;
+}
+
+/////   GET REQUEST HISTORY BY ACCEPTANCE
+
+message GetRequestHistoryByAcceptanceRequest {
+    bool accepted = 1;
+}
+
+message GetRequestHistoryByAcceptanceRespond {
+    repeated RequestHistoryContent requests = 1;
+    int32 total = 2;
+}
+
+
+////////    =========================    ////////
+
+message RequestContent {
+    string id = 1;
+    string sid = 2;
+    int64 begin = 3;
+    int64 end = 4;
+}
+
+message RequestHistoryContent {
+    string id = 1;
+    string sid = 2;
+    string reason = 3;
+    int64 begin = 4;
+    int64 end = 5;
+    int64 timeStamp = 6;
+    bool accepted = 7;
+}

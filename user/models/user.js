@@ -42,12 +42,12 @@ module.exports = (sequelize, DataTypes) => {
     models.user.belongsToMany(models.user, {
       through: "children_parents",
       as: "parents",
-      foreignKey: "parentsId",
+      foreignKey: "childrenId",
     });
     models.user.belongsToMany(models.user, {
       through: "children_parents",
       as: "children",
-      foreignKey: "childrenId",
+      foreignKey: "parentsId",
     });
   };
   return user;

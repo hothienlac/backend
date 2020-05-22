@@ -13,7 +13,7 @@ module.exports = (models) => async (call, callback) => {
     // update = update.filter(function(x) { return x !== null });
     const x = {};
     fields.forEach((value, index, array) => x[value]=update[value]);
-    console.log(x);
+    // console.log(x);
     user.update(update).
         then(() => callback(null, null)).
         catch((err) => callback(err, null));

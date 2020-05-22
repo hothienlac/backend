@@ -3,13 +3,13 @@ const grpc = require('grpc');
 const protoLoader = require("@grpc/proto-loader");
 
 const PORT = process.env.SERVER_PORT;
-const PROTO_PATH = path.join(__dirname, '/proto/message_center.proto');
+const PROTO_PATH = path.join(__dirname, '../proto/request-manager.proto');
 
 
 
 class MessageCenterServer {
 
-    constructor(services) {
+    constructor(models, notification) {
         this.port = PORT;
 
         this.messageCenterService = grpc.loadPackageDefinition(
@@ -22,17 +22,19 @@ class MessageCenterServer {
             })
         );
 
-        const GetAllActiveRequest = require('./GetAllActiveRequest')(services);
-        const GetActiveRequestByStudent = require('./GetActiveRequestByStudent')(services);
-        const GetRequestHistory = require('./GetRequestHistory')(services);
+        const CreateRequest = require('./CreateRequest')(models, notification);
+        // const GetAllActiveRequest = require('./GetAllActiveRequest')(models, notification);
+        // const GetActiveRequestByStudent = require('./GetActiveRequestByStudent')(models, notification);
+        // const GetRequestHistory = require('./GetRequestHistory')(models, notification);
 
         this.server = new grpc.Server();
         this.server.addService(
-            this.messageCenterService.message_center.MessageCenterService.service,
+            this.messageCenterService.request_manager.RequestManagerService.service,
             {
-                GetAllActiveRequest,
-                GetActiveRequestByStudent,
-                GetRequestHistory,
+                CreateRequest
+                // GetAllActiveRequest,
+                // GetActiveRequestByStudent,
+                // GetRequestHistory,
             },
         )
     }

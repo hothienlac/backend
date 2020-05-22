@@ -23,6 +23,10 @@ class Webhook {
         app.get('/hello', (req, res) => {
             res.send('Hello');
         })
+
+        app.get('/', (req, res) => {
+            res.sendStatus(200);
+        })
         
         // We are receiving updates at the route below!
         app.post(`/`, (req, res) => {
